@@ -70,10 +70,13 @@ local function create_class(name, extends)
         end,
         __call = function(self, ...)
             local args = {...}
-            if #args == 1 and type(args[1]) == "table" and getmetatable(args[1]).__type == "object" then
-                local _init = self._init
-                assert(_init ~= nil, string.format("[%s] constructor is not defined!", tostring(self)))
-                return _init(args[1], ...)
+            if #args == 1 and type(args[1]) == "table" then
+                local metatable = getmetatable(args[1])
+                if metatable ~= nil and metatable.__type == "object" then
+                    local _init = self._init
+                    assert(_init ~= nil, string.format("[%s] constructor is not defined!", tostring(self)))
+                    return _init(args[1], ...)
+                end
             end
 
             return init_object(create_object(self), ...)
