@@ -37,8 +37,7 @@ local function create_object(class)
 end
 
 local function init_object(object, ...)
-    object:_init(...)
-    return object
+    return object:_init(...) or object
 end
 
 local function create_class(name, extends)
